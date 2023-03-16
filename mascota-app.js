@@ -1,5 +1,5 @@
 import {v4 as generarCodigo } from 'uuid'
-import { Mascota } from './models/Mascota'
+import { Mascota, Perro } from './models/'
 import formRaw from './templates/form-mascotas.html?raw' // <-- '?raw' es una opcion de Vite. Convierte html a js
 
 
@@ -17,27 +17,50 @@ function manipulacionFormulario (formElement) {
     const tipo = formElement.tipo.value.trim()
     const genero = formElement.genero.value.trim()
     const edad = Number(formElement.edad.value)
+    let p1 = null
 
-    // Una vez validado instancias la clase y cargas datos
-    const p1 = new Mascota({
+    if (element['tipo-mascota'].value === 'mascota'){
+     p1 = new Mascota({
+          type: tipo,
+          name: nombre,
+          microchip,
+          id: generarCodigo(),
+          age: edad,
+          sexo: genero
+        })
+    } else {
+      p1 = new Perro({
         type: tipo,
         name: nombre,
         microchip,
         id: generarCodigo(),
         age: edad,
         sexo: genero
-      })
+      }, {raza: 'molo', peso: 343, alimentacion: 'comida'})
+    }
 
-
-    // Una vez hecho todo, muestras los datos
-    formElement.querySelector('#content').innerHTML = p1.getData()
+    // Mostrar datos, una vez hecho todo lo de arriba:
+    if (p1) formElement.querySelector('#content').innerHTML = p1.getData()
   })
+
   formElement.querySelector('#rango-edad').addEventListener('input', (e) => {
     const input = e.target
     formElement.querySelector('#edad').value = input.value // <-- mete el valor en el input del deslizador
   })
   // const mascota = new Mascota()
   // rootElement.innerHTML += mascota.getData()
+  formElement['tipo-mascota'].addEventListener('change', e => {
+    const select = e.target
+    const divElement = element.querySelector('#otros-campos')
+    if (select.value === 'perro') {
+      // Muestro campos
+      divElement.classList.remove('oculto')
+    } else {
+      // Oculto campos
+      divElement.classList.add('oculto')
+    }
+    }
+  )
 }
 
 

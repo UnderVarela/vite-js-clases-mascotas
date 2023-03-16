@@ -52,6 +52,10 @@ export class Mascota {
     if (Number.isInteger(Number(edad))) this.edad = edad
   }
 
+
+  getId () {
+    return this.#id
+  }
  
   /**
    * Retorna una lista html con todas las propiedades de la clase
@@ -71,3 +75,4 @@ export class Mascota {
     `
   }
 }
+
